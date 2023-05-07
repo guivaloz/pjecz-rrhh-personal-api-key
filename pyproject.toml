@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pjecz_rrhh_personal_api_key"
-version = "0.1.0"
+version = "1.0.0"
 description = "API con autentificación para realizar operaciones con la base de datos de RRHH Personal."
 authors = ["Guillermo Valdes <guillermo.valdes@pjecz.gob.mx>"]
 license = "AGPL3"
@@ -35,3 +35,6 @@ typer = "^0.7.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 256

@@ -2,6 +2,7 @@
 Safe string
 """
 import re
+
 from unidecode import unidecode
 
 CURP_REGEXP = r"^[A-Z]{4}\d{6}[A-Z]{6}[A-Z0-9]{2}$"
