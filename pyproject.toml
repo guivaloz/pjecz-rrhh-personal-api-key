@@ -26,9 +26,11 @@ Unidecode = "^1.3.6"
 uvicorn = "^0.21.1"
 
 [tool.poetry.dev-dependencies]
+black = "^23.1.0"
 pylint = "^2.17.0"
 pylint-sqlalchemy = "^0.2.0"
-black = "^23.1.0"
+rich = "^13.3.3"
+typer = "^0.7.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
