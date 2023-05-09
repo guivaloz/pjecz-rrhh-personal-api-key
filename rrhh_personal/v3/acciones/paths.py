@@ -1,5 +1,5 @@
 """
-Modulos v3, rutas (paths)
+Acciones v3, rutas (paths)
 """
 from fastapi import APIRouter, HTTPException, status
 from fastapi_pagination.ext.sqlalchemy import paginate
@@ -11,38 +11,38 @@ from lib.fastapi_pagination_custom_list import CustomList, custom_list_success_f
 from ...core.permisos.models import Permiso
 from ..usuarios.authentications import CurrentUser
 
-from .crud import get_modulos, get_modulo_with_nombre
-from .schemas import ModuloOut, OneModuloOut
+from .crud import get_acciones, get_accion_with_clave
+from .schemas import AccionOut, OneAccionOut
 
-modulos = APIRouter(prefix="/v3/modulos", tags=["usuarios"])
+acciones = APIRouter(prefix="/v3/acciones", tags=["categoria"])
 
 
-@modulos.get("", response_model=CustomList[ModuloOut])
-async def listado_modulos(
+@acciones.get("", response_model=CustomList[AccionOut])
+async def listado_acciones(
     current_user: CurrentUser,
     db: DatabaseSession,
 ):
-    """Listado de modulos"""
-    if current_user.permissions.get("MODULOS", 0) < Permiso.VER:
+    """Listado de acciones"""
+    if current_user.permissions.get("ACCIONES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_modulos(db=db)
+        resultados = get_acciones(db=db)
     except MyAnyError as error:
         return custom_list_success_false(error)
     return paginate(resultados)
 
 
-@modulos.get("/{nombre}", response_model=OneModuloOut)
-async def detalle_modulo(
+@acciones.get("/{clave}", response_model=OneAccionOut)
+async def detalle_accion(
     current_user: CurrentUser,
     db: DatabaseSession,
-    nombre: str,
+    clave: str,
 ):
-    """Detalle de una modulos a partir de su id"""
-    if current_user.permissions.get("MODULOS", 0) < Permiso.VER:
+    """Detalle de una accion a partir de su clave"""
+    if current_user.permissions.get("ACCIONES", 0) < Permiso.VER:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        modulo = get_modulo_with_nombre(db=db, nombre=nombre)
+        accion = get_accion_with_clave(db=db, clave=clave)
     except MyAnyError as error:
-        return OneModuloOut(success=False, message=str(error))
-    return OneModuloOut.from_orm(modulo)
+        return OneAccionOut(success=False, message=str(error))
+    return OneAccionOut.from_orm(accion)

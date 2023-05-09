@@ -7,6 +7,15 @@ from fastapi_pagination import add_pagination
 
 from config.settings import get_settings
 
+from .v3.acciones.paths import acciones
+from .v3.bitacoras.paths import bitacoras
+from .v3.modulos.paths import modulos
+from .v3.permisos.paths import permisos
+from .v3.roles.paths import roles
+from .v3.usuarios.paths import usuarios
+from .v3.usuarios_acciones.paths import usuarios_acciones
+from .v3.usuarios_roles.paths import usuarios_roles
+
 
 def create_app() -> FastAPI:
     """Crea la aplicación FastAPI"""
@@ -26,6 +35,16 @@ def create_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    # Rutas
+    app.include_router(acciones)
+    app.include_router(bitacoras)
+    app.include_router(modulos)
+    app.include_router(permisos)
+    app.include_router(roles)
+    app.include_router(usuarios)
+    app.include_router(usuarios_acciones)
+    app.include_router(usuarios_roles)
 
     # Paginación
     add_pagination(app)
