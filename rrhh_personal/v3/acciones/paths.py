@@ -14,7 +14,7 @@ from ..usuarios.authentications import CurrentUser
 from .crud import get_acciones, get_accion_with_clave
 from .schemas import AccionOut, OneAccionOut
 
-acciones = APIRouter(prefix="/v3/acciones", tags=["categoria"])
+acciones = APIRouter(prefix="/v3/acciones", tags=["usuarios"])
 
 
 @acciones.get("", response_model=CustomList[AccionOut])
