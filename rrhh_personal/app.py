@@ -7,13 +7,13 @@ from fastapi_pagination import add_pagination
 
 from config.settings import get_settings
 
-from .v3.acciones.paths import acciones
+from .v3.areas.paths import areas
 from .v3.bitacoras.paths import bitacoras
+from .v3.centros_trabajos.paths import centros_trabajos
 from .v3.modulos.paths import modulos
 from .v3.permisos.paths import permisos
 from .v3.roles.paths import roles
 from .v3.usuarios.paths import usuarios
-from .v3.usuarios_acciones.paths import usuarios_acciones
 from .v3.usuarios_roles.paths import usuarios_roles
 
 
@@ -24,6 +24,8 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title="PJECZ RRHH Personal API Key",
         description="Bienvenido a PJECZ RRHH Personal API Key. Esta API es para realizar operaciones con la base de datos de RRHH Personal. Se requiere tener una api-key para usarse.",
+        docs_url="/docs",
+        redoc_url=None,
     )
 
     # CORSMiddleware
@@ -37,13 +39,13 @@ def create_app() -> FastAPI:
     )
 
     # Rutas
-    app.include_router(acciones)
+    app.include_router(areas)
     app.include_router(bitacoras)
+    app.include_router(centros_trabajos)
     app.include_router(modulos)
     app.include_router(permisos)
     app.include_router(roles)
     app.include_router(usuarios)
-    app.include_router(usuarios_acciones)
     app.include_router(usuarios_roles)
 
     # Paginación
