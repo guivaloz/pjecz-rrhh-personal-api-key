@@ -11,7 +11,7 @@ from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_area, get_areas
 from .schemas import AreaOut, OneAreaOut
 
@@ -20,7 +20,7 @@ areas = APIRouter(prefix="/v3/areas", tags=["categoria"])
 
 @areas.get("", response_model=CustomPage[AreaOut])
 async def listado_areas(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     centro_trabajo_id: int = None,
     centro_trabajo_clave: str = None,
@@ -41,7 +41,7 @@ async def listado_areas(
 
 @areas.get("/{area_id}", response_model=OneAreaOut)
 async def detalle_area(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     area_id: int,
 ):

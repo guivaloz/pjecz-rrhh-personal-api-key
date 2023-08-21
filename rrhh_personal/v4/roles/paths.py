@@ -11,7 +11,7 @@ from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_list import CustomList
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_rol_with_nombre, get_roles
 from .schemas import OneRolOut, RolOut
 
@@ -20,7 +20,7 @@ roles = APIRouter(prefix="/v3/roles", tags=["usuarios"])
 
 @roles.get("", response_model=CustomList[RolOut])
 async def listado_roles(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
     """Listado de roles"""
@@ -35,7 +35,7 @@ async def listado_roles(
 
 @roles.get("/{nombre}", response_model=OneRolOut)
 async def detalle_rol(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     nombre: str,
 ):

@@ -7,14 +7,14 @@ from fastapi_pagination import add_pagination
 
 from config.settings import get_settings
 
-from .v3.areas.paths import areas
-from .v3.bitacoras.paths import bitacoras
-from .v3.centros_trabajos.paths import centros_trabajos
-from .v3.modulos.paths import modulos
-from .v3.permisos.paths import permisos
-from .v3.roles.paths import roles
-from .v3.usuarios.paths import usuarios
-from .v3.usuarios_roles.paths import usuarios_roles
+from .v4.areas.paths import areas
+from .v4.bitacoras.paths import bitacoras
+from .v4.centros_trabajos.paths import centros_trabajos
+from .v4.modulos.paths import modulos
+from .v4.permisos.paths import permisos
+from .v4.roles.paths import roles
+from .v4.usuarios.paths import usuarios
+from .v4.usuarios_roles.paths import usuarios_roles
 
 
 def create_app() -> FastAPI:

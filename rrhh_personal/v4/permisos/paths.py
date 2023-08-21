@@ -11,7 +11,7 @@ from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_permiso, get_permisos
 from .schemas import OnePermisoOut, PermisoOut
 
@@ -20,7 +20,7 @@ permisos = APIRouter(prefix="/v3/permisos", tags=["usuarios"])
 
 @permisos.get("", response_model=CustomPage[PermisoOut])
 async def listado_permisos(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     modulo_id: int = None,
     modulo_nombre: str = None,
@@ -45,7 +45,7 @@ async def listado_permisos(
 
 @permisos.get("/{permiso_id}", response_model=OnePermisoOut)
 async def detalle_permiso(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     permiso_id: int,
 ):

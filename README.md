@@ -1,6 +1,6 @@
 # pjecz-rrhh-personal-api-key
 
-API con autentificación para realizar operaciones con la base de datos de RRHH Personal.
+API con autentificación para realizar operaciones con la base de datos de RRHH Personal. Hecho con FastAPI.
 
 ## Mejores practicas
 

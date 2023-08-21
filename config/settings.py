@@ -41,7 +41,7 @@ from google.cloud import secretmanager
 from pydantic_settings import BaseSettings
 
 PROJECT_ID = os.getenv("PROJECT_ID", "")  # Por defecto esta vacio, esto significa estamos en modo local
-SERVICE_PREFIX = os.getenv("SERVICE_PREFIX", "pjecz_plataforma_web_api_key")
+SERVICE_PREFIX = os.getenv("SERVICE_PREFIX", "pjecz_rrhh_personal_api_key")
 
 
 def get_secret(secret_id: str) -> str:

@@ -11,7 +11,7 @@ from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_list import CustomList
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_centro_trabajo_with_clave, get_centros_trabajos
 from .schemas import CentroTrabajoOut, OneCentroTrabajoOut
 
@@ -20,7 +20,7 @@ centros_trabajos = APIRouter(prefix="/v3/centros_trabajos", tags=["categoria"])
 
 @centros_trabajos.get("", response_model=CustomList[CentroTrabajoOut])
 async def listado_centros_trabajos(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
     """Listado de centros de trabajo"""
@@ -35,7 +35,7 @@ async def listado_centros_trabajos(
 
 @centros_trabajos.get("/{clave}", response_model=OneCentroTrabajoOut)
 async def detalle_centro_trabajo(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     clave: str,
 ):

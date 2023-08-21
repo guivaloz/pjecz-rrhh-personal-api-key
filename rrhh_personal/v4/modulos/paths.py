@@ -11,7 +11,7 @@ from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_list import CustomList
 
 from ...core.permisos.models import Permiso
-from ..usuarios.authentications import CurrentUser
+from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_modulo_with_nombre, get_modulos
 from .schemas import ModuloOut, OneModuloOut
 
@@ -20,7 +20,7 @@ modulos = APIRouter(prefix="/v3/modulos", tags=["usuarios"])
 
 @modulos.get("", response_model=CustomList[ModuloOut])
 async def listado_modulos(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
 ):
     """Listado de modulos"""
@@ -35,7 +35,7 @@ async def listado_modulos(
 
 @modulos.get("/{nombre}", response_model=OneModuloOut)
 async def detalle_modulo(
-    current_user: CurrentUser,
+    current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     nombre: str,
 ):
