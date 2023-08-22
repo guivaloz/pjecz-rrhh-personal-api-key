@@ -11,16 +11,13 @@ from lib.schemas_base import OneBaseOut
 class UsuarioOut(BaseModel):
     """Esquema para entregar usuarios"""
 
-    id: int | None
-    email: str | None
-    nombres: str | None
-    apellido_paterno: str | None
-    apellido_materno: str | None
-    curp: str | None
-    puesto: str | None
-    telefono: str | None
-    extension: str | None
-    workspace: str | None
+    id: int | None = None
+    nombres: str | None = None
+    apellido_paterno: str | None = None
+    apellido_materno: str | None = None
+    telefono_celular: str | None = None
+    email: str | None = None
+    rol_nombre: str | None = None
     model_config = ConfigDict(from_attributes=True)
 
 

@@ -10,12 +10,11 @@ from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
 
-from ...core.permisos.models import Permiso
 from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_area, get_areas
 from .schemas import AreaOut, OneAreaOut
 
-areas = APIRouter(prefix="/v3/areas", tags=["categoria"])
+areas = APIRouter(prefix="/v4/areas", tags=["areas"])
 
 
 @areas.get("", response_model=CustomPage[AreaOut])
@@ -26,7 +25,7 @@ async def listado_areas(
     centro_trabajo_clave: str = None,
 ):
     """Listado de areas"""
-    if current_user.permissions.get("AREAS", 0) < Permiso.VER:
+    if current_user.permissions.get("AREAS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         resultados = get_areas(
@@ -46,7 +45,7 @@ async def detalle_area(
     area_id: int,
 ):
     """Detalle de una area a partir de su id"""
-    if current_user.permissions.get("AREAS", 0) < Permiso.VER:
+    if current_user.permissions.get("AREAS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         area = get_area(database=database, area_id=area_id)

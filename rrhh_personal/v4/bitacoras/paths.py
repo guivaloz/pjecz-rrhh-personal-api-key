@@ -10,12 +10,11 @@ from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_page import CustomPage
 
-from ...core.permisos.models import Permiso
 from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_bitacora, get_bitacoras
 from .schemas import BitacoraOut, OneBitacoraOut
 
-bitacoras = APIRouter(prefix="/v3/bitacoras", tags=["usuarios"])
+bitacoras = APIRouter(prefix="/v4/bitacoras", tags=["usuarios"])
 
 
 @bitacoras.get("", response_model=CustomPage[BitacoraOut])
@@ -26,7 +25,7 @@ async def listado_bitacoras(
     usuario_email: str = None,
 ):
     """Listado de bitacoras"""
-    if current_user.permissions.get("BITACORAS", 0) < Permiso.VER:
+    if current_user.permissions.get("BITACORAS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         resultados = get_bitacoras(database=database, usuario_id=usuario_id, usuario_email=usuario_email)
@@ -42,7 +41,7 @@ async def detalle_bitacora(
     bitacora_id: int,
 ):
     """Detalle de una bitacoras a partir de su id"""
-    if current_user.permissions.get("BITACORAS", 0) < Permiso.VER:
+    if current_user.permissions.get("BITACORAS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         bitacora = get_bitacora(database=database, bitacora_id=bitacora_id)

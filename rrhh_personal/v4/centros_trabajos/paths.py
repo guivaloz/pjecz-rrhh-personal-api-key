@@ -10,12 +10,11 @@ from lib.database import Session, get_db
 from lib.exceptions import MyAnyError
 from lib.fastapi_pagination_custom_list import CustomList
 
-from ...core.permisos.models import Permiso
 from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_centro_trabajo_with_clave, get_centros_trabajos
 from .schemas import CentroTrabajoOut, OneCentroTrabajoOut
 
-centros_trabajos = APIRouter(prefix="/v3/centros_trabajos", tags=["categoria"])
+centros_trabajos = APIRouter(prefix="/v4/centros_trabajos", tags=["areas"])
 
 
 @centros_trabajos.get("", response_model=CustomList[CentroTrabajoOut])
@@ -24,7 +23,7 @@ async def listado_centros_trabajos(
     database: Annotated[Session, Depends(get_db)],
 ):
     """Listado de centros de trabajo"""
-    if current_user.permissions.get("CENTROS DE TRABAJO", 0) < Permiso.VER:
+    if current_user.permissions.get("CENTROS DE TRABAJO", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         resultados = get_centros_trabajos(database=database)
@@ -40,7 +39,7 @@ async def detalle_centro_trabajo(
     clave: str,
 ):
     """Detalle de una centro de trabajo a partir de su clave"""
-    if current_user.permissions.get("CENTROS DE TRABAJO", 0) < Permiso.VER:
+    if current_user.permissions.get("CENTROS DE TRABAJO", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         centro_trabajo = get_centro_trabajo_with_clave(database=database, clave=clave)

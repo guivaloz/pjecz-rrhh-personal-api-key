@@ -9,11 +9,11 @@ from lib.schemas_base import OneBaseOut
 class AreaOut(BaseModel):
     """Esquema para entregar areas"""
 
-    id: int | None
-    centro_trabajo_id: int | None
-    centro_trabajo_clave: str | None
-    centro_trabajo_nombre: str | None
-    nombre: str | None
+    id: int | None = None
+    centro_trabajo_id: int | None = None
+    centro_trabajo_clave: str | None = None
+    centro_trabajo_nombre: str | None = None
+    nombre: str | None = None
     model_config = ConfigDict(from_attributes=True)
 
 
