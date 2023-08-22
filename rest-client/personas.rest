@@ -1,0 +1,34 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+@api_key = {{$dotenv API_KEY}}
+
+### Bienvenida
+GET {{root}}
+
+### Personas
+GET {{baseUrl}}/personas
+X-Api-Key: {{api_key}}
+
+### Personas casadas
+GET {{baseUrl}}/personas
+    ?estado_civil=c
+X-Api-Key: {{api_key}}
+
+### Personas solteras
+GET {{baseUrl}}/personas
+    ?estado_civil=s
+X-Api-Key: {{api_key}}
+
+### Personas sexo mujer
+GET {{baseUrl}}/personas
+    ?sexo=m
+X-Api-Key: {{api_key}}
+
+### Personas es situacion baja
+GET {{baseUrl}}/personas
+    ?situacion=b
+X-Api-Key: {{api_key}}
+
+### Persona con CURP
+GET {{baseUrl}}/personas/XXXX999999XXXXXX99
+X-Api-Key: {{api_key}}
