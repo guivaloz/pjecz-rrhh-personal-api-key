@@ -1,8 +1,9 @@
 """
 Modulos, modelos
 """
-from sqlalchemy import Boolean, Column, Integer, String
-from sqlalchemy.orm import relationship
+from typing import OrderedDict
+
+from sqlalchemy import Column, Enum, Integer, String
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
@@ -11,6 +12,13 @@ from lib.universal_mixin import UniversalMixin
 class Modulo(Base, UniversalMixin):
     """Modulo"""
 
+    TIPO = OrderedDict(
+        [
+            ("ADMINISTRACIÓN", "Administrativo"),
+            ("CATÁLOGO", "Catálogo"),
+        ]
+    )
+
     # Nombre de la tabla
     __tablename__ = "modulos"
 
@@ -18,14 +26,10 @@ class Modulo(Base, UniversalMixin):
     id = Column(Integer, primary_key=True)
 
     # Columnas
-    nombre = Column(String(256), unique=True, nullable=False)
-    nombre_corto = Column(String(64), nullable=False)
-    icono = Column(String(48), nullable=False)
-    ruta = Column(String(64), nullable=False)
-    en_navegacion = Column(Boolean, nullable=False, default=True)
-
-    # Hijos
-    bitacoras = relationship("Bitacora", back_populates="modulo")
+    nombre = Column(String(32), unique=True, nullable=False)
+    descripcion = Column(String(256))
+    icono_nombre = Column(String(32), nullable=False)  # Nombre del icono en FontAwesome
+    tipo = Column(Enum(*TIPO, name="tipo", native_enum=False), index=False, nullable=False)
 
     def __repr__(self):
         """Representación"""

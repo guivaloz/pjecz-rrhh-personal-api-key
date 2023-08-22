@@ -14,7 +14,7 @@ from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_centro_trabajo_with_clave, get_centros_trabajos
 from .schemas import CentroTrabajoOut, OneCentroTrabajoOut
 
-centros_trabajos = APIRouter(prefix="/v4/centros_trabajos", tags=["areas"])
+centros_trabajos = APIRouter(prefix="/v4/centros_trabajos", tags=["catalogos"])
 
 
 @centros_trabajos.get("", response_model=CustomList[CentroTrabajoOut])
@@ -23,7 +23,7 @@ async def listado_centros_trabajos(
     database: Annotated[Session, Depends(get_db)],
 ):
     """Listado de centros de trabajo"""
-    if current_user.permissions.get("CENTROS DE TRABAJO", 0) < 1:
+    if current_user.permissions.get("CENTROS TRABAJOS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         resultados = get_centros_trabajos(database=database)
@@ -39,7 +39,7 @@ async def detalle_centro_trabajo(
     clave: str,
 ):
     """Detalle de una centro de trabajo a partir de su clave"""
-    if current_user.permissions.get("CENTROS DE TRABAJO", 0) < 1:
+    if current_user.permissions.get("CENTROS TRABAJOS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
         centro_trabajo = get_centro_trabajo_with_clave(database=database, clave=clave)

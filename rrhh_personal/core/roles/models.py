@@ -32,9 +32,9 @@ class Rol(Base, UniversalMixin):
 
     def can_view(self, module):
         """¿Tiene permiso para ver?"""
-        if module in ("BITACORAS", "ENTRADAS_SALIDAS", "MODULOS", "ROLES", "TAREAS"):
+        if module in ("BITACORAS", "ENTRADAS SALIDAS", "MODULOS", "ROLES", "TAREAS"):
             return self.has_permission(Permiso.VER_CUENTAS)
-        if module in ("AREAS", "CENTROS_TRABAJOS"):
+        if module in ("AREAS", "CENTROS TRABAJOS"):
             return self.has_permission(Permiso.VER_CATALOGOS)
         return True
 
@@ -44,8 +44,8 @@ class Rol(Base, UniversalMixin):
         return {
             "AREAS": self.has_permission(Permiso.VER_CATALOGOS),
             "BITACORAS": self.has_permission(Permiso.VER_CUENTAS),
-            "CENTROS_TRABAJOS": self.has_permission(Permiso.VER_CATALOGOS),
-            "ENTRADAS_SALIDAS": self.has_permission(Permiso.VER_CUENTAS),
+            "CENTROS TRABAJOS": self.has_permission(Permiso.VER_CATALOGOS),
+            "ENTRADAS SALIDAS": self.has_permission(Permiso.VER_CUENTAS),
             "MODULOS": self.has_permission(Permiso.VER_CUENTAS),
             "PERSONAS": self.has_permission(Permiso.VER_PERSONAL),
             "ROLES": self.has_permission(Permiso.VER_CUENTAS),
