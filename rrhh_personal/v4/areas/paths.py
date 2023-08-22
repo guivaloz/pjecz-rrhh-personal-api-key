@@ -14,7 +14,7 @@ from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_area, get_areas
 from .schemas import AreaOut, OneAreaOut
 
-areas = APIRouter(prefix="/v4/areas", tags=["areas"])
+areas = APIRouter(prefix="/v4/areas", tags=["catalogos"])
 
 
 @areas.get("", response_model=CustomPage[AreaOut])

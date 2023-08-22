@@ -5,6 +5,10 @@
 ### Bienvenida
 GET {{root}}
 
+### Modulos
+GET {{baseUrl}}/modulos
+X-Api-Key: {{api_key}}
+
 ### Roles
 GET {{baseUrl}}/roles
 X-Api-Key: {{api_key}}

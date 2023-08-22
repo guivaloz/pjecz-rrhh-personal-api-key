@@ -14,7 +14,7 @@ from ..usuarios.authentications import UsuarioInDB, get_current_active_user
 from .crud import get_persona_with_curp, get_personas
 from .schemas import OnePersonaOut, PersonaOut
 
-personas = APIRouter(prefix="/v4/personas", tags=["categoria"])
+personas = APIRouter(prefix="/v4/personas", tags=["personal"])
 
 
 @personas.get("", response_model=CustomPage[PersonaOut])
