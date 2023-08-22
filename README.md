@@ -1,6 +1,6 @@
 # pjecz-rrhh-personal-api-key
 
-API con autentificación para realizar operaciones con la base de datos de RRHH Personal.
+API con autentificación para realizar operaciones con la base de datos de RRHH Personal. Hecho con FastAPI.
 
 ## Mejores practicas
 
@@ -15,12 +15,16 @@ Body que entrega un listado
     {
         "success": true,
         "message": "Success",
-        "result": {
-            "total": 2812,
-            "items": [ { "id": 1, ... } ],
-            "limit": 100,
-            "offset": 0
-        }
+        "total": 2812,
+        "items": [
+            {
+                "id": 123,
+                ...
+            },
+            ...
+        ],
+        "limit": 100,
+        "offset": 0
     }
 
 Body que entrega un item
@@ -131,6 +135,13 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
         echo
     fi
 
+    if [ -d tests ]
+    then
+        echo "-- Pruebas unitarias"
+        echo "   python -m unittest discover tests"
+        echo
+    fi
+
     if [ -f app.yaml ]
     then
         echo "-- Para subir a produccion ya NO necesita ejecutar gcloud app deploy"
@@ -164,10 +175,22 @@ Instale el entorno virtual con **Python 3.11** y los paquetes necesarios
     pip install wheel
     poetry install
 
+## Arrancar para desarrollo
+
+Ejecute `arrancar` que es un alias dentro de `.bashrc`
+
+    arrancar
+
+## Pruebas
+
+Para ejecutar las pruebas arranque el servidor y ejecute
+
+    python -m unittest discover tests
+
 ## Google Cloud deployment
 
-Si agrega o quita paquetes o edita `pyproject.toml` debe crear el archivo `requirements.txt`
+Este proyecto usa **GitHub Actions** para subir a **Google Cloud**
+
+Para ello debe crear el archivo `requirements.txt`
 
     poetry export -f requirements.txt --output requirements.txt --without-hashes
-
-GitHub Actions se hara cargo de subir los cambios a Google Cloud

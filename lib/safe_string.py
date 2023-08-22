@@ -2,6 +2,7 @@
 Safe string
 """
 import re
+from datetime import date
 
 from unidecode import unidecode
 
@@ -9,8 +10,6 @@ CURP_REGEXP = r"^[A-Z]{4}\d{6}[A-Z]{6}[A-Z0-9]{2}$"
 EMAIL_REGEXP = r"^[\w.-]+@[\w.-]+\.\w+$"
 PASSWORD_REGEXP = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,24}$"
 TELEFONO_REGEXP = r"^[1-9]\d{9}$"
-
-PASSWORD_REGEXP_MESSAGE = "La contrasena debe tener de 8 a 24 caracteres, comenzando con una letra y contener por lo menos una mayuscula y un numero"
 
 
 def safe_clave(input_str):
@@ -49,6 +48,30 @@ def safe_email(input_str, search_fragment=False):
     if regexp.match(final) is None:
         raise ValueError("Email es incorrecto")
     return final
+
+
+def safe_expediente(input_str):
+    """Safe expediente"""
+    if not isinstance(input_str, str) or input_str.strip() == "":
+        raise ValueError("Expediente es incorrecto")
+    elementos = re.sub(r"[^a-zA-Z0-9]+", "|", unidecode(input_str)).split("|")
+    try:
+        numero = int(elementos[0])
+        anio = int(elementos[1])
+    except (IndexError, ValueError) as error:
+        raise error
+    if anio < 1900 or anio > date.today().year:
+        raise ValueError
+    extra_1 = ""
+    if len(elementos) >= 3:
+        extra_1 = "-" + elementos[2].upper()
+    extra_2 = ""
+    if len(elementos) >= 4:
+        extra_2 = "-" + elementos[3].upper()
+    limpio = f"{str(numero)}/{str(anio)}{extra_1}{extra_2}"
+    if len(limpio) > 16:
+        raise ValueError
+    return limpio
 
 
 def safe_string(input_str, max_len=250):

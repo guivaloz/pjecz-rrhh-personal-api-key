@@ -1,13 +1,11 @@
 """
 Usuarios, modelos
 """
-from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from lib.database import Base
 from lib.universal_mixin import UniversalMixin
-
-from ..permisos.models import Permiso
 
 
 class Usuario(Base, UniversalMixin):
@@ -19,15 +17,16 @@ class Usuario(Base, UniversalMixin):
     # Clave primaria
     id = Column(Integer, primary_key=True)
 
+    # Clave foránea
+    rol_id = Column(Integer, ForeignKey("roles.id"), index=True, nullable=False)
+    rol = relationship("Rol", back_populates="usuarios")
+
     # Columnas
-    email = Column(String(256), nullable=False, unique=True, index=True)
     nombres = Column(String(256), nullable=False)
-    apellido_primero = Column(String(256), nullable=False)
-    apellido_segundo = Column(String(256))
-    curp = Column(String(18))
-    puesto = Column(String(256))
-    telefono = Column(String(48), nullable=False)
-    extension = Column(String(24), nullable=False)
+    apellido_paterno = Column(String(256), nullable=False)
+    apellido_materno = Column(String(256))
+    telefono_celular = Column(String(256))
+    email = Column(String(256))
 
     # Columnas que no deben ser expuestas
     api_key = Column(String(128), nullable=False)
@@ -37,11 +36,6 @@ class Usuario(Base, UniversalMixin):
     # Hijos
     bitacoras = relationship("Bitacora", back_populates="usuario")
     entradas_salidas = relationship("EntradaSalida", back_populates="usuario")
-    usuarios_acciones = relationship("UsuarioAccion", back_populates="usuario")
-    usuarios_roles = relationship("UsuarioRol", back_populates="usuario")
-
-    # Propiedades
-    permisos_consultados = {}
 
     @property
     def nombre(self):
@@ -49,41 +43,32 @@ class Usuario(Base, UniversalMixin):
         return self.nombres + " " + self.apellido_paterno + " " + self.apellido_materno
 
     @property
+    def rol_nombre(self):
+        """Nombre del rol"""
+        return self.rol.nombre
+
+    @classmethod
+    def find_by_identity(cls, identity):
+        """Encontrar a un usuario por su correo electrónico"""
+        return Usuario.query.filter(Usuario.email == identity).first()
+
+    @property
+    def is_active(self):
+        """¿Es activo?"""
+        return self.estatus == "A"
+
+    @property
     def permissions(self):
-        """Entrega un diccionario con todos los permisos"""
-        if len(self.permisos_consultados) > 0:
-            return self.permisos_consultados
-        self.permisos_consultados = {}
-        for usuario_rol in self.usuarios_roles:
-            if usuario_rol.estatus == "A":
-                for permiso in usuario_rol.rol.permisos:
-                    if permiso.estatus == "A":
-                        etiqueta = permiso.modulo.nombre
-                        if etiqueta not in self.permisos_consultados or permiso.nivel > self.permisos_consultados[etiqueta]:
-                            self.permisos_consultados[etiqueta] = permiso.nivel
-        return self.permisos_consultados
+        """Permisos"""
+        return self.rol.permissions
 
-    def can(self, modulo_nombre: str, permission: int):
+    def can(self, perm):
         """¿Tiene permiso?"""
-        if modulo_nombre in self.permisos:
-            return self.permisos[modulo_nombre] >= permission
-        return False
+        return self.rol.has_permission(perm)
 
-    def can_view(self, modulo_nombre: str):
+    def can_view(self, module):
         """¿Tiene permiso para ver?"""
-        return self.can(modulo_nombre, Permiso.VER)
-
-    def can_edit(self, modulo_nombre: str):
-        """¿Tiene permiso para editar?"""
-        return self.can(modulo_nombre, Permiso.MODIFICAR)
-
-    def can_insert(self, modulo_nombre: str):
-        """¿Tiene permiso para agregar?"""
-        return self.can(modulo_nombre, Permiso.CREAR)
-
-    def can_admin(self, modulo_nombre: str):
-        """¿Tiene permiso para administrar?"""
-        return self.can(modulo_nombre, Permiso.ADMINISTRAR)
+        return self.rol.can_view(module)
 
     def __repr__(self):
         """Representación"""

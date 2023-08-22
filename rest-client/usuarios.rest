@@ -1,0 +1,35 @@
+@root = {{$dotenv HOST}}
+@baseUrl = {{root}}/v4
+@api_key = {{$dotenv API_KEY}}
+
+### Bienvenida
+GET {{root}}
+
+### Roles
+GET {{baseUrl}}/roles
+X-Api-Key: {{api_key}}
+
+### Rol con id 1 que es el ADMINISTRADOR
+GET {{baseUrl}}/roles/1
+X-Api-Key: {{api_key}}
+
+### Rol con id 999999 que no existe
+GET {{baseUrl}}/roles/999999
+X-Api-Key: {{api_key}}
+
+### Usuarios
+GET {{baseUrl}}/usuarios
+X-Api-Key: {{api_key}}
+
+### Usuarios con email gmail.com
+GET {{baseUrl}}/usuarios
+    ?email=gmail.com
+X-Api-Key: {{api_key}}
+
+### Usuario no.existe.999@pjecz.gob.mx
+GET {{baseUrl}}/usuarios/no.existe.999@pjecz.gob.mx
+X-Api-Key: {{api_key}}
+
+### Usuario anamaria.martinez@pjecz.gob.mx
+GET {{baseUrl}}/usuarios/anamaria.martinez@pjecz.gob.mx
+X-Api-Key: {{api_key}}

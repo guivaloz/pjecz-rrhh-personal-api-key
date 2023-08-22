@@ -26,7 +26,6 @@ class Modulo(Base, UniversalMixin):
 
     # Hijos
     bitacoras = relationship("Bitacora", back_populates="modulo")
-    permisos = relationship("Permiso", back_populates="modulo")
 
     def __repr__(self):
         """Representación"""

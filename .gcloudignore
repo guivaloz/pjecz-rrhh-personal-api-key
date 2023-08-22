@@ -2,20 +2,20 @@
 .directory
 .env
 .gcloudignore
-.git
-.github
 .gitignore
-.venv
-.vscode
 .DS_Store
 
+*.csv
 *.py[cod]
 *.sqlite3
 *.xlsx
 
 __pycache__/
-/poetry.lock
-/pyproject.toml
 
+/.git
+/.github
+/.venv
+/.vscode
 /rest-client
 /tests
+/venv
