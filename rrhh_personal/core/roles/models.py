@@ -47,6 +47,7 @@ class Rol(Base, UniversalMixin):
             "CENTROS_TRABAJOS": self.has_permission(Permiso.VER_CATALOGOS),
             "ENTRADAS_SALIDAS": self.has_permission(Permiso.VER_CUENTAS),
             "MODULOS": self.has_permission(Permiso.VER_CUENTAS),
+            "PERSONAS": self.has_permission(Permiso.VER_PERSONAL),
             "ROLES": self.has_permission(Permiso.VER_CUENTAS),
             "USUARIOS": self.has_permission(Permiso.VER_CUENTAS),
         }
