@@ -138,7 +138,7 @@ Cree un archivo `.bashrc` que se puede usar en el perfil de **Konsole**
     if [ -d tests ]
     then
         echo "-- Pruebas unitarias"
-        echo "   python -m unittest discover tests"
+        echo "   python3 -m unittest discover tests"
         echo
     fi
 

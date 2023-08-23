@@ -26,7 +26,7 @@ async def listado_roles(
     if current_user.permissions.get("ROLES", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_roles(database=database)
+        resultados = get_roles(database)
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
     return paginate(resultados)

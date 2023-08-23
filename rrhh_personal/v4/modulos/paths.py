@@ -1,5 +1,5 @@
 """
-Modulos v3, rutas (paths)
+Modulos v4, rutas (paths)
 """
 from typing import Annotated
 
@@ -26,7 +26,7 @@ async def listado_modulos(
     if current_user.permissions.get("MODULOS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_modulos(database=database)
+        resultados = get_modulos(database)
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
     return paginate(resultados)
@@ -42,7 +42,7 @@ async def detalle_modulo(
     if current_user.permissions.get("MODULOS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        modulo = get_modulo_with_nombre(database=database, nombre=nombre)
+        modulo = get_modulo_with_nombre(database, nombre)
     except MyAnyError as error:
         return OneModuloOut(success=False, message=str(error))
     return OneModuloOut.model_validate(modulo)
