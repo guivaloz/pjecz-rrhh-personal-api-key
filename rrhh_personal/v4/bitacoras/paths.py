@@ -1,5 +1,5 @@
 """
-Bitacoras v3, rutas (paths)
+Bitacoras v4, rutas (paths)
 """
 from typing import Annotated
 
@@ -28,7 +28,11 @@ async def listado_bitacoras(
     if current_user.permissions.get("BITACORAS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_bitacoras(database=database, usuario_id=usuario_id, usuario_email=usuario_email)
+        resultados = get_bitacoras(
+            database=database,
+            usuario_id=usuario_id,
+            usuario_email=usuario_email,
+        )
     except MyAnyError as error:
         return CustomPage(success=False, message=str(error))
     return paginate(resultados)
@@ -44,7 +48,7 @@ async def detalle_bitacora(
     if current_user.permissions.get("BITACORAS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        bitacora = get_bitacora(database=database, bitacora_id=bitacora_id)
+        bitacora = get_bitacora(database, bitacora_id)
     except MyAnyError as error:
         return OneBitacoraOut(success=False, message=str(error))
     return OneBitacoraOut.model_validate(bitacora)

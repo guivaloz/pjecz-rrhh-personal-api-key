@@ -1,5 +1,5 @@
 """
-Centros de Trabajo v3, rutas (paths)
+Centros de Trabajo v4, rutas (paths)
 """
 from typing import Annotated
 
@@ -26,7 +26,7 @@ async def listado_centros_trabajos(
     if current_user.permissions.get("CENTROS TRABAJOS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        resultados = get_centros_trabajos(database=database)
+        resultados = get_centros_trabajos(database)
     except MyAnyError as error:
         return CustomList(success=False, message=str(error))
     return paginate(resultados)
@@ -42,7 +42,7 @@ async def detalle_centro_trabajo(
     if current_user.permissions.get("CENTROS TRABAJOS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        centro_trabajo = get_centro_trabajo_with_clave(database=database, clave=clave)
+        centro_trabajo = get_centro_trabajo_with_clave(database, clave)
     except MyAnyError as error:
         return OneCentroTrabajoOut(success=False, message=str(error))
     return OneCentroTrabajoOut.model_validate(centro_trabajo)

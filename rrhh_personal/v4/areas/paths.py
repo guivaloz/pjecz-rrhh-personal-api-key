@@ -1,5 +1,5 @@
 """
-Areas v3, rutas (paths)
+Areas v4, rutas (paths)
 """
 from typing import Annotated
 
@@ -48,7 +48,7 @@ async def detalle_area(
     if current_user.permissions.get("AREAS", 0) < 1:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")
     try:
-        area = get_area(database=database, area_id=area_id)
+        area = get_area(database, area_id)
     except MyAnyError as error:
         return OneAreaOut(success=False, message=str(error))
     return OneAreaOut.model_validate(area)
