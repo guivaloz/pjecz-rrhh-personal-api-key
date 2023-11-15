@@ -9,6 +9,7 @@ from unidecode import unidecode
 CURP_REGEXP = r"^[A-Z]{4}\d{6}[A-Z]{6}[A-Z0-9]{2}$"
 EMAIL_REGEXP = r"^[\w.-]+@[\w.-]+\.\w+$"
 PASSWORD_REGEXP = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,24}$"
+RFC_REGEXP = r"^[a-zA-Z]{3,4}\d{6}[a-zA-Z0-9]{3}$"
 TELEFONO_REGEXP = r"^[1-9]\d{9}$"
 
 
@@ -23,7 +24,7 @@ def safe_clave(input_str):
     return new_string
 
 
-def safe_curp(input_str):
+def safe_curp(input_str) -> str:
     """Safe CURP"""
     if not isinstance(input_str, str):
         raise ValueError("CURP no es texto")
@@ -35,7 +36,7 @@ def safe_curp(input_str):
     return final
 
 
-def safe_email(input_str, search_fragment=False):
+def safe_email(input_str, search_fragment=False) -> str:
     """Safe email"""
     if not isinstance(input_str, str) or input_str.strip() == "":
         raise ValueError("Email es incorrecto")
@@ -50,7 +51,7 @@ def safe_email(input_str, search_fragment=False):
     return final
 
 
-def safe_expediente(input_str):
+def safe_expediente(input_str) -> str:
     """Safe expediente"""
     if not isinstance(input_str, str) or input_str.strip() == "":
         raise ValueError("Expediente es incorrecto")
@@ -74,7 +75,22 @@ def safe_expediente(input_str):
     return limpio
 
 
-def safe_string(input_str, max_len=250):
+def safe_rfc(input_str, is_optional=False, search_fragment=False) -> str:
+    """Safe RFC"""
+    if not isinstance(input_str, str):
+        return ""
+    stripped = input_str.strip()
+    if is_optional and stripped == "":
+        return ""
+    clean_string = re.sub(r"[^a-zA-Z0-9]+", " ", unidecode(stripped))
+    without_spaces = re.sub(r"\s+", "", clean_string)
+    final = without_spaces.upper()
+    if search_fragment is False and re.match(RFC_REGEXP, final) is None:
+        raise ValueError("RFC inválido")
+    return final
+
+
+def safe_string(input_str, max_len=250) -> str:
     """Safe string"""
     if not isinstance(input_str, str):
         return ""
@@ -84,7 +100,7 @@ def safe_string(input_str, max_len=250):
     return (final[:max_len] + "...") if len(final) > max_len else final
 
 
-def safe_telefono(input_str):
+def safe_telefono(input_str) -> str:
     """Safe telefono"""
     if not isinstance(input_str, str):
         raise ValueError("Telefono no es texto")

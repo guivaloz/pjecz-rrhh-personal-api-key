@@ -6,7 +6,7 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from lib.exceptions import MyIsDeletedError, MyNotExistsError, MyNotValidParamError
-from lib.safe_string import safe_string
+from lib.safe_string import safe_rfc, safe_string
 
 from ...core.personas.models import Persona
 
@@ -14,6 +14,7 @@ from ...core.personas.models import Persona
 def get_personas(
     database: Session,
     estado_civil: str | None = None,
+    rfc: str | None = None,
     sexo: str | None = None,
     situacion: str | None = None,
 ) -> Any:
@@ -22,6 +23,9 @@ def get_personas(
     if estado_civil is not None:
         estado_civil = safe_string(estado_civil)
         consulta = consulta.filter_by(estado_civil=estado_civil)
+    if rfc is not None:
+        rfc = safe_rfc(rfc, search_fragment=True)
+        consulta = consulta.filter(Persona.rfc.contains(rfc))
     if sexo is not None:
         sexo = safe_string(sexo)
         consulta = consulta.filter_by(sexo=sexo)
