@@ -22,6 +22,7 @@ async def paginado_personas(
     current_user: Annotated[UsuarioInDB, Depends(get_current_active_user)],
     database: Annotated[Session, Depends(get_db)],
     estado_civil: str | None = None,
+    rfc: str | None = None,
     sexo: str | None = None,
     situacion: str | None = None,
 ):
@@ -32,6 +33,7 @@ async def paginado_personas(
         resultados = get_personas(
             database=database,
             estado_civil=estado_civil,
+            rfc=rfc,
             sexo=sexo,
             situacion=situacion,
         )

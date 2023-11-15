@@ -3,7 +3,7 @@ Personas, modelos
 """
 from collections import OrderedDict
 
-from sqlalchemy import Column, Enum, Integer, String
+from sqlalchemy import Column, Date, Enum, Integer, String
 from sqlalchemy.orm import relationship
 
 from lib.database import Base
@@ -58,6 +58,8 @@ class Persona(Base, UniversalMixin):
     situacion = Column(Enum(*OrderedDict(SITUACION), name="tipo_situacion", native_enum=False), index=False, nullable=True)
     sexo = Column(Enum(*OrderedDict(SEXO), name="tipo_sexo", native_enum=False), index=False, nullable=True)
     estado_civil = Column(Enum(*OrderedDict(ESTADO_CIVIL), name="estado_civil", native_enum=False), index=False, nullable=True)
+    fecha_ingreso_gobierno = Column(Date())
+    fecha_ingreso_pj = Column(Date())
 
     @property
     def nombre(self):
